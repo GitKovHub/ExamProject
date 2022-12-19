@@ -7,7 +7,6 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         Strassen s = new Strassen();
         Strassen7Threads s7 = new Strassen7Threads();
-
         int N = scan.nextInt();
         int min = scan.nextInt();
         int max = scan.nextInt();
