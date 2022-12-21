@@ -2,43 +2,44 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws ExecutionException, InterruptedException {
         System.out.println("available processors: " + Runtime.getRuntime().availableProcessors());
         MatrixOperations mg = new MatrixOperations();
         Scanner scan = new Scanner(System.in);
-        DifMatrixMultiplication dmm = new DifMatrixMultiplication();
-        Strassen s = new Strassen();
-        StrassenThread st = new StrassenThread();
-        Strassen7Threads s7 = new Strassen7Threads();
+        int N = 4096;
+       // for(int N = 64; N<32000; N*=2) {
+           // System.out.println("N: "+N);
+            int[][] A = mg.genMatrix(N, 1, 50);
+            int[][] B = mg.genMatrix(N, 1, 50);
+            //testWinograd(A, B);
+            testWinogradThread(A, B);
+            //System.out.println();
+        //}
+
+    }
+
+    public static void testWinograd(int[][] A, int[][] B){
         Winograd w = new Winograd();
-        WinogradThread wt = new WinogradThread();
-        int N = scan.nextInt();
-        int[][] A = mg.genMatrix(N,1,50);
-        int[][] B = mg.genMatrix(N,1,50);
+        double start = System.nanoTime();
+        int[][] C = w.multiply(A,B);
+        double end = System.nanoTime();
+        System.out.println("testWinograd -> taken for n = "+A.length+" is : "+(end-start)/1000000000 + " Seconds");
+    }
 
-        System.out.println("\nA");
-        //mg.showMatrix(A);
+    public static void testWinogradThread(int[][] A, int[][] B) throws ExecutionException, InterruptedException {
+        WinogradThread w = new WinogradThread();
+        double start = System.nanoTime();
+        int[][] C = w.multiply(A, B);
+        double end = System.nanoTime();
+        System.out.println("testWinogradThread -> taken for n = "+A.length+" is : "+(end-start)/1000000000 + " Seconds");
+    }
 
-        System.out.println("\nB");
-        //mg.showMatrix(B);
-
-        long time = System.currentTimeMillis();
-        int[][] C = wt.multiply(A,B);
-        //System.out.println("\nS");
-        //mg.showMatrix(C);
-        System.out.println(System.currentTimeMillis() - time);
-
-        time = System.currentTimeMillis();
-        C = w.multiply(A, B);
-        //System.out.println("\nS");
-        //mg.showMatrix(C);
-        System.out.println(System.currentTimeMillis() - time);
-
-        /*long time = System.currentTimeMillis();
-        int[][] C7 = s7.multiply(A, B);
-        System.out.println("\nS7");
-        mg.showMatrix(C7);
-        System.out.println((System.currentTimeMillis() - time)/1000 + "sec");*/
+    public static void testDefault(int[][] A, int[][] B, int threadCount) throws InterruptedException {
+        DifMatrixMultiplication dmm = new DifMatrixMultiplication();
+        double start = System.nanoTime();
+        int[][] C = dmm.multiply(A, B, threadCount);
+        double end = System.nanoTime();
+        System.out.println("testDefault -> with " + threadCount + "thread(s) taken for n = "+A.length+" is : "+(end-start)/1000000000 + " Seconds");
     }
 
 }

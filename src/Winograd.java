@@ -8,6 +8,7 @@ public class Winograd {
             R[0][0] = A[0][0] * B[0][0];
         else
         {
+            //System.out.println("rec");
             int[][] A11 = new int[n/2][n/2];
             int[][] A12 = new int[n/2][n/2];
             int[][] A21 = new int[n/2][n/2];
