@@ -10,11 +10,11 @@ public class Main {
         Strassen s = new Strassen();
         StrassenThread st = new StrassenThread();
         Strassen7Threads s7 = new Strassen7Threads();
+        Winograd w = new Winograd();
+        WinogradThread wt = new WinogradThread();
         int N = scan.nextInt();
-        int min = scan.nextInt();
-        int max = scan.nextInt();
-        int[][] A = mg.genMatrix(N,min,max);
-        int[][] B = mg.genMatrix(N,min,max);
+        int[][] A = mg.genMatrix(N,1,50);
+        int[][] B = mg.genMatrix(N,1,50);
 
         System.out.println("\nA");
         //mg.showMatrix(A);
@@ -23,9 +23,15 @@ public class Main {
         //mg.showMatrix(B);
 
         long time = System.currentTimeMillis();
-        int[][] C = s.multiply(A, B);
-        System.out.println("\nS");
-        mg.showMatrix(C);
+        int[][] C = wt.multiply(A,B);
+        //System.out.println("\nS");
+        //mg.showMatrix(C);
+        System.out.println(System.currentTimeMillis() - time);
+
+        time = System.currentTimeMillis();
+        C = w.multiply(A, B);
+        //System.out.println("\nS");
+        //mg.showMatrix(C);
         System.out.println(System.currentTimeMillis() - time);
 
         /*long time = System.currentTimeMillis();

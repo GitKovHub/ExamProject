@@ -55,4 +55,4 @@ class workercore implements Runnable
                     R[i][j] += A[i][k] * B[k][j];
             }
     }
-}//workercore
+}
