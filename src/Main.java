@@ -7,12 +7,13 @@ public class Main {
         MatrixOperations mg = new MatrixOperations();
         Scanner scan = new Scanner(System.in);
         int N = 4096;
-       // for(int N = 64; N<32000; N*=2) {
+        //for(int N = 64; N<4000; N*=2) {
            // System.out.println("N: "+N);
             int[][] A = mg.genMatrix(N, 1, 50);
             int[][] B = mg.genMatrix(N, 1, 50);
             //testWinograd(A, B);
-            testWinogradThread(A, B);
+            //testWinograd(A, B);
+            testDefault(A, B, 8);
             //System.out.println();
         //}
 
