@@ -4,7 +4,7 @@ import java.util.concurrent.*;
 
 public class Strassen7Threads {
     public int[][] multiply(int[][] A, int[][] B) throws ExecutionException, InterruptedException {
-        Strassen s = new Strassen();
+        MatrixOperations mo = new MatrixOperations();
         int n = A.length;
         int[][] R = new int[n][n];
         /** base case **/
@@ -22,15 +22,15 @@ public class Strassen7Threads {
             int[][] B22 = new int[n/2][n/2];
 
             /** Dividing matrix A into 4 halves **/
-            s.split(A, A11, 0 , 0);
-            s.split(A, A12, 0 , n/2);
-            s.split(A, A21, n/2, 0);
-            s.split(A, A22, n/2, n/2);
+            mo.split(A, A11, 0 , 0);
+            mo.split(A, A12, 0 , n/2);
+            mo.split(A, A21, n/2, 0);
+            mo.split(A, A22, n/2, n/2);
             /** Dividing matrix B into 4 halves **/
-            s.split(B, B11, 0 , 0);
-            s.split(B, B12, 0 , n/2);
-            s.split(B, B21, n/2, 0);
-            s.split(B, B22, n/2, n/2);
+            mo.split(B, B11, 0 , 0);
+            mo.split(B, B12, 0 , n/2);
+            mo.split(B, B21, n/2, 0);
+            mo.split(B, B22, n/2, n/2);
 
     ExecutorService executor = Executors.newCachedThreadPool();
     List<FutureTask<int[][]>> taskList1 = new ArrayList<FutureTask<int[][]>>();
@@ -38,43 +38,43 @@ public class Strassen7Threads {
     FutureTask<int[][]> futureTask_2 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(s.add(A11, A22),s. add(B11, B22));
+            return multiply(mo.add(A11, A22),mo. add(B11, B22));
         }
     });
     FutureTask<int[][]> futureTask_3 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(s.add(A21, A22), B11);
+            return multiply(mo.add(A21, A22), B11);
         }
     });
     FutureTask<int[][]> futureTask_4 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(A11, s.sub(B12, B22));
+            return multiply(A11, mo.sub(B12, B22));
         }
     });
     FutureTask<int[][]> futureTask_5 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(A22, s.sub(B21, B11));
+            return multiply(A22, mo.sub(B21, B11));
         }
     });
     FutureTask<int[][]> futureTask_6 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(s.add(A11, A12), B22);
+            return multiply(mo.add(A11, A12), B22);
         }
     });
     FutureTask<int[][]> futureTask_7 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(s.sub(A21, A11), s.add(B11, B12));
+            return multiply(mo.sub(A21, A11), mo.add(B11, B12));
         }
     });
     FutureTask<int[][]> futureTask_8 = new FutureTask<int[][]>(new Callable<int[][]>() {
         @Override
         public int[][] call() throws InterruptedException, ExecutionException {
-            return multiply(s.sub(A12, A22), s.add(B21, B22));
+            return multiply(mo.sub(A12, A22), mo.add(B21, B22));
         }
     });
     taskList1.add(futureTask_2);
@@ -108,16 +108,16 @@ public class Strassen7Threads {
     final int[][] M7 = ftrTask6.get();
     executor.shutdown();
 
-            int [][] C11 = s.add(s.sub(s.add(M1, M4), M5), M7);
-            int [][] C12 = s.add(M3, M5);
-            int [][] C21 = s.add(M2, M4);
-            int [][] C22 = s.add(s.sub(s.add(M1, M3), M2), M6);
+            int [][] C11 = mo.add(mo.sub(mo.add(M1, M4), M5), M7);
+            int [][] C12 = mo.add(M3, M5);
+            int [][] C21 = mo.add(M2, M4);
+            int [][] C22 = mo.add(mo.sub(mo.add(M1, M3), M2), M6);
 
             /** join 4 halves into one result matrix **/
-            s.join(C11, R, 0 , 0);
-            s.join(C12, R, 0 , n/2);
-            s.join(C21, R, n/2, 0);
-            s.join(C22, R, n/2, n/2);
+            mo.join(C11, R, 0 , 0);
+            mo.join(C12, R, 0 , n/2);
+            mo.join(C21, R, n/2, 0);
+            mo.join(C22, R, n/2, n/2);
         }
         /** return result **/
         return R;

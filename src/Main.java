@@ -2,10 +2,13 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 public class Main {
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args) throws Exception {
+        System.out.println("available processors: " + Runtime.getRuntime().availableProcessors());
         MatrixOperations mg = new MatrixOperations();
         Scanner scan = new Scanner(System.in);
+        DifMatrixMultiplication dmm = new DifMatrixMultiplication();
         Strassen s = new Strassen();
+        StrassenThread st = new StrassenThread();
         Strassen7Threads s7 = new Strassen7Threads();
         int N = scan.nextInt();
         int min = scan.nextInt();
@@ -14,22 +17,22 @@ public class Main {
         int[][] B = mg.genMatrix(N,min,max);
 
         System.out.println("\nA");
-        mg.showMatrix(A);
+        //mg.showMatrix(A);
 
         System.out.println("\nB");
-        mg.showMatrix(B);
+        //mg.showMatrix(B);
 
-        /*long time = System.currentTimeMillis();
+        long time = System.currentTimeMillis();
         int[][] C = s.multiply(A, B);
         System.out.println("\nS");
         mg.showMatrix(C);
-        System.out.println(System.currentTimeMillis() - time);*/
+        System.out.println(System.currentTimeMillis() - time);
 
-        long time = System.currentTimeMillis();
+        /*long time = System.currentTimeMillis();
         int[][] C7 = s7.multiply(A, B);
         System.out.println("\nS7");
         mg.showMatrix(C7);
-        System.out.println((System.currentTimeMillis() - time)/1000 + "sec");
+        System.out.println((System.currentTimeMillis() - time)/1000 + "sec");*/
     }
 
 }
